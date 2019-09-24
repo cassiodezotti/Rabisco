@@ -64,14 +64,14 @@ public class Communication{
     this.oscP5.send(messageToElenaProject, pdAddress);
   }
   
-  private void sendSteeringWheel(Skeleton skeleton){
+  /*private void sendSteeringWheel(Skeleton skeleton){
     OscMessage messageToVideoSphere = new OscMessage("/steeringWheelRollStep:");
     messageToVideoSphere.add(skeleton.steeringWheel.rollStep);
     this.oscP5.send(messageToVideoSphere, pdAddress);
     messageToVideoSphere = new OscMessage("/steeringWheelPitchStep:");
     messageToVideoSphere.add(skeleton.steeringWheel.pitchStep);
     this.oscP5.send(messageToVideoSphere, pdAddress);
-  }
+  }*/
   
   private void sendKinectSkeleton(Skeleton skeleton){ 
     OscMessage messageToPd = new OscMessage("/indexColor:");

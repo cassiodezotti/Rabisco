@@ -162,6 +162,7 @@ public class RondDuBras{
       max = -crossProductDirectionWhenActivatedRelativeToSpineShoulder.z;
     }
     //println("RondDuBrasActivatedDirectionCode: " + this.activatedDirectionCode);
+    
   }
   
   /**

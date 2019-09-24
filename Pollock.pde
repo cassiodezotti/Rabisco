@@ -3,7 +3,7 @@
  */
 public class Pollock{
   private final float speedThreshold = 0.75;
-  private final int numberOfAltitudes = 3; // max: 9
+  private final int numberOfAltitudes = 2; // max: 9
   private final float altitudeDiscretization = PI/(this.numberOfAltitudes+1); // azimuth discretization (in radians)
   private final int numberOfAzimuths = 4; // max: 9
   private final float azimuthDiscretization = TWO_PI/this.numberOfAzimuths; // azimuth discretization (in radians)

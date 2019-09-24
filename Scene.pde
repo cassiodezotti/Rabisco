@@ -7,7 +7,7 @@ KinectPV2 kinect = new KinectPV2(this);
  */
 public class Scene{
   public Floor floor;
-  private final float frameRate_ = 10;
+  private final float frameRate_ = 20;
   private float cameraTransX = 600;
   private float cameraTransY = 420;
   private float cameraTransZ = -60;
@@ -31,9 +31,9 @@ public class Scene{
   public boolean drawHandStates = false;
   public boolean drawPollock = false;
   public boolean drawRondDuBras = false;
-  public boolean drawMomentum = true;
+  public boolean drawMomentum = false;
   public boolean drawCenterOfMass = false;
-  public boolean loadFloorCalibration = false;
+  public boolean loadFloorCalibration = true;
   
   public Scene(){
     this.currentDeltaT = 1/this.frameRate_; 
@@ -99,7 +99,7 @@ public class Scene{
  * If a skeleton is abscent for 5 seconds, it is deleted.
  */
   private void cleanDeadSkeletons(){
-    int timeTolerance = 5; // seconds
+    int timeTolerance = 3; // seconds
     int s = 0;
     int[] skeletonsToRemove = new int[6];
     for(Skeleton skeleton:activeSkeletons.values()){

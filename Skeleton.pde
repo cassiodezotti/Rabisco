@@ -51,7 +51,7 @@ public class Skeleton{
   public float bodySize; // Average length of all bones. Ideally, it should be normalized so that an average person would have bodySize = 1... This normalization have yet to be implemented.
   public float headInclination = 0; // head inclination relative to Z axis, in radians
   public float shoulderTension = 0; // SHOULDER height relative to SPINESHOULDER
-  public SteeringWheel steeringWheel = new SteeringWheel(this);
+  //public SteeringWheel steeringWheel = new SteeringWheel(this);
   public float distanceBetweenHands;
   public PVector centerOfMass;
   public float centerOfMassHeightAdjusted; // Center of Mass height adjusted for body size. 
@@ -283,7 +283,7 @@ public class Skeleton{
 /**
  * For testing only, shall be deprecated
  */
-  private void drawSteeringWheel(){
+  /*private void drawSteeringWheel(){
     PVector vertex1 = PVector.mult(new PVector(cos(this.steeringWheel.yawAngle), 0, sin(this.steeringWheel.yawAngle)), 100*this.steeringWheel.yawSize);
     PVector vertex2 = PVector.mult(new PVector(-cos(this.steeringWheel.yawAngle), 0, -sin(this.steeringWheel.yawAngle)), 100*this.steeringWheel.yawSize);
     PVector vertex3 = PVector.mult(new PVector(0, cos(this.steeringWheel.pitchAngle), sin(this.steeringWheel.pitchAngle)), 100*this.steeringWheel.pitchSize);
@@ -297,7 +297,7 @@ public class Skeleton{
     line(vertex3.x, vertex3.y, vertex3.z, vertex4.x, vertex4.y, vertex4.z);
     stroke(color(67, 128, 23));
     line(vertex5.x, vertex5.y, vertex5.z, vertex6.x, vertex6.y, vertex6.z);
-  }
+  }*/
   
   private void updateHeadInclination(){
     PVector vectorFromNeckToHead = PVector.sub(this.joints[HEAD].estimatedPosition, this.joints[NECK].estimatedPosition);
