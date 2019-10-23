@@ -15,6 +15,7 @@ public class Joint{
   private PVector estimatedPosition;
   private PVector estimatedVelocity = new PVector(0,0,0);
   private PVector estimatedAcceleration = new PVector(0,0,0);
+  private PVector estimatedJerk = new PVector(0,0,0);
   private Quaternion measuredOrientation;
   private float averageAngleBetweenMeasuredOrientationAndPredictedCurrentOrientation; // theta
   private float angleBetweenMeasuredOrientationAndPredictedCurrentOrientationStandardDeviation; // std of theta: angle between measuredOrientation and estimatedOrientation. 
@@ -26,6 +27,11 @@ public class Joint{
   private PVector measuredDirectionX;
   private PVector measuredDirectionY;
   private PVector measuredDirectionZ;
+  private PVector averageOfAcceleration = new PVector(0,0,0);
+  private PVector previousAverageOfAcceleration = new PVector(0,0,0);
+  private float standartDeviation = 0;
+  private float previousStandartDeviation = 0;
+  private float confiabilityParameter = 0.9;
   
   public Joint(int id, KJoint kJoint, Skeleton skeleton){
     this.skeleton = skeleton;
@@ -120,9 +126,19 @@ public class Joint{
                                             .add(PVector.mult(this.measuredPosition, adjustedConfidenceParameters[0]));
     }
     PVector newEstimatedVelocity = PVector.sub(newEstimatedPosition, this.estimatedPosition).div(this.skeleton.scene.currentDeltaT);
-    this.estimatedAcceleration = PVector.sub(newEstimatedVelocity, this.estimatedVelocity).div(this.skeleton.scene.currentDeltaT);
+    PVector newEstimatedAcceleration = PVector.sub(newEstimatedVelocity, this.estimatedVelocity).div(this.skeleton.scene.currentDeltaT);
+    
+    
+    //this.previousAverageOfAcceleration = PVector.sub(newEstimatedAcceleration,this.estimatedAcceleration).div(2);
+    //this.previousStandartDeviation = PVector.sub(newEstimatedAcceleration,averageOfAcceleration).mag();
+    this.estimatedJerk = PVector.sub(newEstimatedAcceleration,this.estimatedAcceleration).div(this.skeleton.scene.currentDeltaT);
+    this.estimatedAcceleration = newEstimatedAcceleration;
     this.estimatedVelocity = newEstimatedVelocity;
     this.estimatedPosition = newEstimatedPosition;
+    this.averageOfAcceleration = PVector.add(previousAverageOfAcceleration.mult(confiabilityParameter),estimatedAcceleration.mult(1-confiabilityParameter));
+    this.standartDeviation = previousStandartDeviation*confiabilityParameter +PVector.sub(this.estimatedAcceleration, this.averageOfAcceleration).mag()*(1-confiabilityParameter);
+    previousAverageOfAcceleration = this.averageOfAcceleration;
+    previousStandartDeviation = this.standartDeviation;
 /*
     if(this.id == FOOT_LEFT){
       println("LeftFoot accel: "+this.estimatedAcceleration.mag());

@@ -39,10 +39,13 @@ public class ParticleSystem{
   }
   public void addParticles(PVector position, int id, float sat) {
   
-  if(id == 9){this.startColor = color(0,0,0);this.endColor = color(255,255,255);}
+  if(id == 9){this.startColor = color(0,0,100);this.endColor = color(0,0,100);}
+  else if(id == 8){
+    println("b",bright);
+    this.startColor = color(random(360),100,bright);this.endColor = color(random(360),100,bright);}
   else if(id == 2){this.startColor = red;this.endColor = blu;}
   else if(id == -2){this.startColor = pink;this.endColor = yellow;}
-  else if(id == 3){this.startColor = blue;this.endColor = green;}
+  else if(id == 3){this.startColor = blue;this.endColor = pink;}
   else if(id == -3){this.startColor = purple;this.endColor = orange;}
   //else {this.startColor = this.endColor;this.endColor = this.startColor;}
   
