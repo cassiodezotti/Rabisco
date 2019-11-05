@@ -2,8 +2,10 @@
 
 
 public class ParticleSystem{
-  private color endColor;
-  private  color startColor;
+  
+  private color endColor = color(100,100,100,HSB);
+   private color startColor= color(100,100,100,HSB);
+  private float saturation = 0;
 
   private ArrayList<Particle> particles = new ArrayList<Particle>();
   
@@ -37,24 +39,82 @@ public class ParticleSystem{
       
     }
   }
-  public void addParticles(PVector position, int id, float sat) {
+  public void addParticles(PVector position,int id) {
+  //int cor = int(random(8));
   
-  if(id == 9){this.startColor = color(0,0,100);this.endColor = color(0,0,100);}
-  else if(id == 8){
-    println("b",bright);
-    this.startColor = color(random(360),100,bright);this.endColor = color(random(360),100,bright);}
-  else if(id == 2){this.startColor = red;this.endColor = blu;}
-  else if(id == -2){this.startColor = pink;this.endColor = yellow;}
-  else if(id == 3){this.startColor = blue;this.endColor = pink;}
-  else if(id == -3){this.startColor = purple;this.endColor = orange;}
-  //else {this.startColor = this.endColor;this.endColor = this.startColor;}
   
-  for (int i = 0; i < numberOfParticles; i++) {
+  this.startColor = choseColor(id);
+  
+  //cor = int(random(8));
+  this.endColor = choseColor(id+10);
+  
+  
+  
+      for (int i = 0; i < numberOfParticles; i++) {
+      
+        float amount = random(1);
+        color col = lerpColor(this.startColor, this.endColor, amount);
+        col = color(hue(col),this.saturation,100);
+        //col = desaturate(col, this.saturation);
+        this.particles.add(new Particle(new PVector(position.x,position.y), col));
+        //println("HUE1",hue(col));
+  //println("SAT1",saturation(col));
+  //println("BRI1",brightness(col));
+      }
+    }
     
-    float amount = random(1);
-    color col = lerpColor(this.startColor, this.endColor, amount);
-    //col = desaturate(col, sat);
-    system.particles.add(new Particle(new PVector(position.x-0.2*i,position.y-0.2*i), col));
+  public color choseColor(int id){
+    
+    color cor = color(0,0,0,HSB);
+    switch(id){
+    case 1:
+      cor = blue1;
+      break;
+    case 11:
+      cor = purple1;
+      break;
+   case 2:
+      cor = orange;
+      break;
+   case 12:
+      cor = red1;
+      break;
+   case 3:
+      cor = yellow;
+      break;
+   case 13:
+      cor = green;
+      break;
+   case 4:
+      cor = blue2;
+      break;
+   case 14:
+      cor = purple2;
+      break;
+   case 5:
+      cor = blu1;
+      break;
+   case 15:
+      cor = blu2;
+      break;
+   case 6:
+      cor = red1;
+      break;
+   case 16:
+      cor = red2;
+      break;
   }
+    return cor;
+    
   }
+  
+  public color desaturate(color col, float factor) {
+  float sat = saturation(col) * factor;
+  return color(
+    hue(col),
+    sat,
+    brightness(col)
+  );
+  }
+  
   }

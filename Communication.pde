@@ -27,6 +27,13 @@ public class Communication{
   private void sendMessageToElenaProject(Skeleton skeleton){
     OscMessage messageToElenaProject;
     
+    messageToElenaProject = new OscMessage("/standartDeviationRight:");
+    messageToElenaProject.add(skeleton.joints[HAND_RIGHT].standartDeviationNorm);
+    this.oscP5.send(messageToElenaProject, pdAddress);
+    messageToElenaProject = new OscMessage("/standartDeviationLeft:");
+    messageToElenaProject.add(skeleton.joints[HAND_LEFT].standartDeviationNorm);
+    this.oscP5.send(messageToElenaProject, pdAddress);
+    
     messageToElenaProject = new OscMessage("/centerOfMassHeightAdjusted:");
     messageToElenaProject.add(skeleton.centerOfMassHeightAdjusted);
     this.oscP5.send(messageToElenaProject, pdAddress);

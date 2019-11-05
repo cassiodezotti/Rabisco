@@ -30,6 +30,8 @@ public class Joint{
   private PVector averageOfAcceleration = new PVector(0,0,0);
   private PVector previousAverageOfAcceleration = new PVector(0,0,0);
   private float standartDeviation = 0;
+  private float standartDeviationNorm = 0;
+  private float maxDeviation = 0;
   private float previousStandartDeviation = 0;
   private float confiabilityParameter = 0.9;
   
@@ -139,6 +141,11 @@ public class Joint{
     this.standartDeviation = previousStandartDeviation*confiabilityParameter +PVector.sub(this.estimatedAcceleration, this.averageOfAcceleration).mag()*(1-confiabilityParameter);
     previousAverageOfAcceleration = this.averageOfAcceleration;
     previousStandartDeviation = this.standartDeviation;
+    
+    if(this.standartDeviation > this.maxDeviation){
+     this.maxDeviation = this.standartDeviation; 
+    }
+    this.standartDeviationNorm = norm(this.standartDeviation,0,6);
 /*
     if(this.id == FOOT_LEFT){
       println("LeftFoot accel: "+this.estimatedAcceleration.mag());
