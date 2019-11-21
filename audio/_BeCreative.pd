@@ -1,0 +1,191 @@
+#N canvas 193 25 1121 634 10;
+#X declare -lib mrpeach;
+#X obj 39 27 sendMidiToGrace;
+#X obj 40 -6 bng 15 250 50 0 empty empty start 17 7 0 10 -262144 -1
+-1;
+#X obj 344 18 spigot;
+#X obj 375 -8 tgl 15 0 empty empty enable_print: -77 8 0 10 -4034 -1
+-1 0 1;
+#X obj 344 43 print received;
+#N canvas 529 53 494 344 META 0;
+#X text 12 155 HELP_PATCH_AUTHORS "pd meta" information added by Jonathan
+Wilkes for Pd version 0.42.;
+#X text 12 25 LICENSE GPL v2 or later;
+#X text 12 135 AUTHOR Martin Peach;
+#X text 12 5 KEYWORDS control network;
+#X text 12 45 DESCRIPTION receive datagrams over a udp connection and
+outputs them as raw bytes;
+#X text 12 75 INLET_0 status port;
+#X text 12 95 OUTLET_0 anything;
+#X text 12 115 OUTLET_1 received total from multicast;
+#X restore -111 -30 pd META;
+#X obj -120 15 import mrpeach;
+#X obj 182 -42 loadbang;
+#X msg 182 -21 port 3000;
+#X obj 181 0 udpreceive;
+#X obj 180 24 unpackOSC;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array HandLeft 100 float 3;
+#A 0 0.259907 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917
+0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917
+0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917
+0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917
+0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917
+0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917
+0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.281917
+0.281917 0.281917 0.281917 0.281917 0.281917 0.281917 0.0420122 0.0479231
+0.0527503 0.0577072 0.0644297 0.0689498 0.0736546 0.0761969 0.0758643
+0.0744015 0.0711249 0.0697735 0.0709502 0.0743289 0.0759681 0.0756212
+0.0756739 0.0759925 0.0793285 0.0826479 0.0856289 0.0885816 0.117176
+0.161603 0.195698 0.203151 0.195184 0.198624 0.205683 0.221721 0.255642
+0.284263 0.296638 0.288629 0.261286 0.24397 0.232447 0.229664 0.243416
+;
+#X coords 0 1 99 0 200 70 2 0 0;
+#X restore -125 76 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array HandRight 100 float 3;
+#A 0 0.386601 0.389528 0.404914 0.404914 0.404914 0.404914 0.404914
+0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914
+0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914
+0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914
+0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914
+0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914
+0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914
+0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.404914 0.0882602
+0.0886224 0.0870095 0.0851495 0.0880599 0.0868104 0.0858338 0.0840483
+0.0816433 0.0824668 0.0848318 0.0841735 0.0808033 0.0795388 0.0816732
+0.0870016 0.0962433 0.109442 0.127663 0.144759 0.159436 0.166057 0.166932
+0.164881 0.165287 0.161582 0.155951 0.153212 0.151971 0.178741 0.250449
+0.309586 0.329776 0.326487 0.329574 0.315665 0.322962 0.339547;
+#X coords 0 1 99 0 200 70 1 0 0;
+#X restore -132 168 graph;
+#X obj 176 134 s Jleft;
+#X obj 464 141 s JRight;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array AffordLeft 7 float 3;
+#A 0 3.28595 4 4 9 6 4 8;
+#X coords 0 10 6 0 200 70 2 0 0;
+#X restore -132 259 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array AffordRight 7 float 3;
+#A 0 0.427979 0 5 0 0 6 2;
+#X coords 0 10 7 0 200 70 2 0 0;
+#X restore -132 358 graph;
+#N canvas 822 411 450 300 writeJerk 0;
+#X obj 62 98 tabwrite HandLeft;
+#X obj 59 19 r Jleft;
+#X obj 59 41 t f b;
+#X obj 118 19 f;
+#X obj 117 43 + 1;
+#X obj 118 65 mod 100;
+#X obj 68 164 t f b;
+#X obj 128 138 f;
+#X obj 127 162 + 1;
+#X obj 128 184 mod 100;
+#X obj 67 135 r JRight;
+#X obj 68 216 tabwrite HandRight;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 2 1 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 1;
+#X connect 5 0 0 1;
+#X connect 6 0 11 0;
+#X connect 6 1 7 0;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 1;
+#X connect 9 0 11 1;
+#X connect 10 0 6 0;
+#X restore -119 -85 pd writeJerk;
+#N canvas 874 603 1091 534 writeAfford 0;
+#X obj 52 -92 expr if($f1==0 \, 1 \, 0) \; if($f1== -1 \, 1 \, 0) \;
+if($f1== 1 \, 1 \, 0) \; if($f1== -2 \, 1 \, 0) \; if($f1== 2 \, 1
+\, 0) \; if($f1== -3 \, 1 \, 0) \; if($f1== 3 \, 1 \, 0) \;;
+#X obj -135 24 histogram 0;
+#X obj 623 212 tabwrite AffordRight;
+#X obj 593 -131 r FRight;
+#X obj 594 -94 expr if($f1==0 \, 1 \, 0) \; if($f1== -1 \, 1 \, 0)
+\; if($f1== 1 \, 1 \, 0) \; if($f1== -2 \, 1 \, 0) \; if($f1== 2 \,
+1 \, 0) \; if($f1== -3 \, 1 \, 0) \; if($f1== 3 \, 1 \, 0) \;;
+#X obj 51 -129 r FLeft;
+#X obj 81 214 tabwrite AffordLeft;
+#X obj 322 29 histogram 6;
+#X obj -61 22 histogram 1;
+#X obj 21 20 histogram 2;
+#X obj 97 24 histogram 3;
+#X obj 174 26 histogram 4;
+#X obj 249 28 histogram 5;
+#X obj 407 22 histogram 0;
+#X obj 864 27 histogram 6;
+#X obj 481 20 histogram 1;
+#X obj 563 18 histogram 2;
+#X obj 639 22 histogram 3;
+#X obj 716 24 histogram 4;
+#X obj 791 26 histogram 5;
+#X connect 0 1 8 0;
+#X connect 0 2 9 0;
+#X connect 0 3 10 0;
+#X connect 0 4 11 0;
+#X connect 0 5 12 0;
+#X connect 0 6 7 0;
+#X connect 1 0 6 0;
+#X connect 1 1 6 1;
+#X connect 3 0 4 0;
+#X connect 4 1 15 0;
+#X connect 4 2 16 0;
+#X connect 4 3 17 0;
+#X connect 4 4 18 0;
+#X connect 4 5 19 0;
+#X connect 4 6 14 0;
+#X connect 5 0 0 0;
+#X connect 7 0 6 0;
+#X connect 7 1 6 1;
+#X connect 8 0 6 0;
+#X connect 8 1 6 1;
+#X connect 9 0 6 0;
+#X connect 9 1 6 1;
+#X connect 10 0 6 0;
+#X connect 10 1 6 1;
+#X connect 11 0 6 0;
+#X connect 11 1 6 1;
+#X connect 12 0 6 0;
+#X connect 12 1 6 1;
+#X connect 13 0 2 0;
+#X connect 13 1 2 1;
+#X connect 14 0 2 0;
+#X connect 14 1 2 1;
+#X connect 15 0 2 0;
+#X connect 15 1 2 1;
+#X connect 16 0 2 0;
+#X connect 16 1 2 1;
+#X connect 17 0 2 0;
+#X connect 17 1 2 1;
+#X connect 18 0 2 0;
+#X connect 18 1 2 1;
+#X connect 19 0 2 0;
+#X connect 19 1 2 1;
+#X restore -120 -104 pd writeAfford;
+#X obj 301 133 s FLeft;
+#X obj 587 145 s FRight;
+#X obj 176 107 routeOSC /JerkNormLeft /leftHandRondDuBras;
+#X obj 461 106 routeOSC /JerkNormRight /rightHandRondDuBras;
+#X obj 317 306 print Fleft;
+#X obj 316 237 r FLeft;
+#X obj 315 280 moses 0;
+#X connect 1 0 0 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 1;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 2 0;
+#X connect 9 0 10 0;
+#X connect 10 0 21 0;
+#X connect 10 0 22 0;
+#X connect 21 0 13 0;
+#X connect 21 1 19 0;
+#X connect 22 0 14 0;
+#X connect 22 1 20 0;
+#X connect 24 0 25 0;
+#X connect 25 0 23 0;
