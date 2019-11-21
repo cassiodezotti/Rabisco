@@ -27,10 +27,12 @@ public class Communication{
   private void sendMessageToElenaProject(Skeleton skeleton){
     OscMessage messageToElenaProject;
     
-    messageToElenaProject = new OscMessage("/standartDeviationRight:");
+    messageToElenaProject = new OscMessage("/JerkNormRight");
     messageToElenaProject.add(skeleton.joints[HAND_RIGHT].standartDeviationNorm);
     this.oscP5.send(messageToElenaProject, pdAddress);
-    messageToElenaProject = new OscMessage("/standartDeviationLeft:");
+    
+    
+    messageToElenaProject = new OscMessage("/JerkNormLeft");
     messageToElenaProject.add(skeleton.joints[HAND_LEFT].standartDeviationNorm);
     this.oscP5.send(messageToElenaProject, pdAddress);
     
@@ -50,13 +52,18 @@ public class Communication{
     messageToElenaProject.add(skeleton.rightHandPollock.activationDirectionCode);
     this.oscP5.send(messageToElenaProject, pdAddress);
     
-    messageToElenaProject = new OscMessage("/leftHandRondDuBras.activatedDirectionCode:");
+    messageToElenaProject = new OscMessage("/leftHandRondDuBras");
     messageToElenaProject.add(skeleton.leftHandRondDuBras.activatedDirectionCode);
     this.oscP5.send(messageToElenaProject, pdAddress);
     
-    messageToElenaProject = new OscMessage("/rightHandRondDuBras.activatedDirectionCode:");
+    if(skeleton.leftHandRondDuBras.activatedDirectionCode != 0 )println("RondLeft",skeleton.leftHandRondDuBras.activatedDirectionCode);
+    
+    messageToElenaProject = new OscMessage("/rightHandRondDuBras");
     messageToElenaProject.add(skeleton.rightHandRondDuBras.activatedDirectionCode);
     this.oscP5.send(messageToElenaProject, pdAddress);
+    
+    if(skeleton.rightHandRondDuBras.activatedDirectionCode != 0 )println("RondRight",skeleton.rightHandRondDuBras.activatedDirectionCode);
+    
     
     messageToElenaProject = new OscMessage("/momentum.averageFluid:");
     messageToElenaProject.add(skeleton.momentum.averageFluid);

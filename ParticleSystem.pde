@@ -46,7 +46,7 @@ public class ParticleSystem{
   this.startColor = choseColor(id);
   
   //cor = int(random(8));
-  this.endColor = choseColor(id+10);
+  this.endColor = choseColor(id+20);
   
   
   
@@ -67,41 +67,47 @@ public class ParticleSystem{
     
     color cor = color(0,0,0,HSB);
     switch(id){
+    
     case 1:
-      cor = blue1;
-      break;
-    case 11:
-      cor = purple1;
-      break;
-   case 2:
-      cor = orange;
-      break;
-   case 12:
       cor = red1;
       break;
-   case 3:
-      cor = yellow;
+    case 21:
+      cor = red2;
       break;
-   case 13:
-      cor = green;
+      
+   case -1:
+      cor = red1;
       break;
-   case 4:
-      cor = blue2;
+   case 19:
+      cor = red2;
       break;
-   case 14:
-      cor = purple2;
-      break;
-   case 5:
+      
+   case -2:
       cor = blu1;
       break;
-   case 15:
+   case 18:
       cor = blu2;
       break;
-   case 6:
+      
+   case 2:
+      cor = blu2;
+      break;
+   case 22:
+      cor = purple1;
+      break;
+      
+   case 3:
+      cor = green;
+      break;
+   case 23:
+      cor = yellow2;
+      break;
+      
+   case -3:
       cor = red1;
       break;
-   case 16:
-      cor = red2;
+   case 17:
+      cor = orange;
       break;
   }
     return cor;
