@@ -34,6 +34,7 @@ public class Joint{
   private float maxDeviation = 0;
   private float previousStandartDeviation = 0;
   private float confiabilityParameter = 0.9;
+  private float saturation = 0;
   
   public Joint(int id, KJoint kJoint, Skeleton skeleton){
     this.skeleton = skeleton;
