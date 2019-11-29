@@ -93,7 +93,7 @@ public class Skeleton{
       this.savingOutput = createWriter("savedSessions/"+this.scene.sessionName+"/skeleton"+this.scene.numberOfSkeletons+".txt");
       this.savingOutput.print("frameCount bodySize centerOfMassHeightAdjusted dispersion leftPollock rightPollock leftRondDuBras rightRondDuBras momentumFluid momentumHarsh momentumTotal handRadiusLeft handRadiusRight ");
       for(int j=0; j<25; j++){
-        this.savingOutput.print("joint"+j+"PositionX joint"+j+"PositionY joint"+j+"PositionZ joint"+j+"OrientationW joint"+j+"OrientationX joint"+j+"OrientationY joint"+j+"OrientationZ ");
+        this.savingOutput.print("joint"+j+"PositionX joint"+j+"PositionY joint"+j+"PositionZ joint"+j+"OrientationW joint"+j+"OrientationX joint"+j+"OrientationY joint"+j+"OrientationZ joint"+j+"VelocityX joint"+j+"VelocityY joint"+j+"VelocityZ joint"+j+"AccelerationX joint"+j+"AccelerationY joint"+j+"AccelerationZ joint"+j+"Deviation"+j+"DeviationNorm"+j+"Saturation");
       }
       this.savingOutput.println("");
       this.savingOutput.flush();
@@ -148,7 +148,17 @@ public class Skeleton{
                               this.joints[j].estimatedOrientation.real+" "+
                               this.joints[j].estimatedOrientation.vector.x+" "+
                               this.joints[j].estimatedOrientation.vector.y+" "+
-                              this.joints[j].estimatedOrientation.vector.z+" ");
+                              this.joints[j].estimatedOrientation.vector.z+" "+
+                              this.joints[j].estimatedVelocity.x+" "+
+                              this.joints[j].estimatedVelocity.y+" "+
+                              this.joints[j].estimatedVelocity.z+" "+
+                              this.joints[j].estimatedAcceleration.x+" "+
+                              this.joints[j].estimatedAcceleration.y+" "+
+                              this.joints[j].estimatedAcceleration.z+" "+
+                              this.joints[j].standartDeviation+" "+
+                              this.joints[j].standartDeviationNorm+" "+
+                              this.joints[j].saturation+" ");
+                              
     }
     this.savingOutput.println("");
     this.savingOutput.flush();
