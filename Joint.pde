@@ -29,7 +29,7 @@ public class Joint{
   private PVector measuredDirectionZ;
   private PVector averageOfAcceleration = new PVector(0,0,0);
   private PVector previousAverageOfAcceleration = new PVector(0,0,0);
-  private float standartDeviation = 0;
+  private float standartDeviation = 0; //
   private float standartDeviationNorm = 0;
   private float maxDeviation = 0;
   private float previousStandartDeviation = 0;

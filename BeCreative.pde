@@ -10,18 +10,12 @@ Scene scene = new Scene();
 private boolean MOTION_BLUR = true;
 private PVector normPosRight = new PVector(0,0);
 private PVector normPosLeft = new PVector(0,0);
-private boolean firstDraw = true;
-private boolean drawpaint = false;
 boolean firstTime = true;
 private ParticleSystem systemRight = new ParticleSystem();
 private ParticleSystem systemLeft = new ParticleSystem();
 PGraphics mixer;
 PShader mixerShader;
 private int numberOfParticles = 12;
-private int percentOfParticles = 2;
-//private color endColor;
-//private color startColor;
-private int bright = 100;
 private int firstSkeleton;
 private int coder = 2;
 private int codel = 2;
@@ -29,7 +23,7 @@ private float minHeight;
 private float maxHeight;
 int pdPort = 3000;
 int myPort = 3001;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-Communication communication = new Communication("143.106.219.176", pdPort, myPort);
+Communication communication = new Communication("143.106.219.176" , pdPort, myPort);//"127.0.0.1"  "143.106.219.176"
 private color blue1 ;
   private color purple1;
   private color red1;
@@ -79,50 +73,36 @@ void draw() {
   
   for(Skeleton skeleton:scene.activeSkeletons.values()){
     firstSkeleton = skeleton.indexColor;
-    //println("ID", skeleton.scene.activeSkeletons.values());
-    //println("UD", skeleton.scene.activeSkeletons.size());
-    
     minHeight = (skeleton.bones[14].measuredLength+skeleton.bones[18].measuredLength)/2;
     maxHeight = ((skeleton.bones[14].measuredLength+skeleton.bones[18].measuredLength)/2)+((skeleton.bones[13].measuredLength+skeleton.bones[17].measuredLength)/2)+skeleton.bones[0].measuredLength+skeleton.bones[1].measuredLength+skeleton.bones[2].measuredLength+skeleton.bones[3].measuredLength+((skeleton.bones[6].measuredLength+skeleton.bones[10].measuredLength)/2);//+((skeleton.bones[7].measuredLength+skeleton.bones[11].measuredLength)/2);
-    if(scene.floor.isCalibrated){
-      //if((skeleton.scene.floor.toFloorCoordinateSystem(skeleton.joints[HAND_LEFT].estimatedPosition)).y > (skeleton.scene.floor.toFloorCoordinateSystem(skeleton.joints[SPINE_BASE].estimatedPosition)).x && (skeleton.scene.floor.toFloorCoordinateSystem(skeleton.joints[HAND_RIGHT].estimatedPosition)).y > (skeleton.scene.floor.toFloorCoordinateSystem(skeleton.joints[SPINE_BASE].estimatedPosition)).x){
-        //println("Momentum Average",skeleton.momentum.averageTotal);//varia mais devagar, até 30
-        //println("Momentum TOtal",skeleton.momentum.total); //varia mais rápido até 40
-        //println("Deviation R",skeleton.joints[HAND_RIGHT].previousStandartDeviation);//chega até 7 com muito esforço, é possível manter em 2 ou 3
-        //println("Deviation L",skeleton.joints[HAND_LEFT].previousStandartDeviation);
-        
+    if(scene.floor.isCalibrated){        
         //this.numberOfParticles = int(skeleton.momentum.total/percentOfParticles);
+        
+        
         this.normPosRight = skeleton.scene.floor.toFloorCoordinateSystem(skeleton.joints[HAND_RIGHT].estimatedPosition);
         this.normPosRight.x = map(this.normPosRight.x,(-scene.floor.dimensions.x)/2,(scene.floor.dimensions.x)/2,-width/2,width/2);
         this.normPosRight.y = map(this.normPosRight.y,maxHeight,minHeight,-height/2,height/2);
-        
-        
-          
-        //if(skeleton.rightHandRondDuBras.activatedDirectionCode != 0){coder = skeleton.rightHandRondDuBras.activatedDirectionCode;}
         
         if(skeleton.joints[HAND_RIGHT].standartDeviationNorm < this.jerkRange){
           systemRight.saturation = systemRight.saturation - this.saturationIncrement;
           skeleton.joints[HAND_RIGHT].saturation = systemRight.saturation;
           skeleton.joints[HAND_RIGHT].saturation = norm(skeleton.joints[HAND_RIGHT].saturation,0,100);
         }
+        
         if(skeleton.joints[HAND_RIGHT].standartDeviationNorm > this.jerkRange && skeleton.joints[HAND_RIGHT].standartDeviationNorm<1){
           systemRight.saturation = systemRight.saturation + this.saturationIncrement;
           skeleton.joints[HAND_RIGHT].saturation = systemRight.saturation;
           skeleton.joints[HAND_RIGHT].saturation = norm(skeleton.joints[HAND_RIGHT].saturation,0,100);
         }
+        
         systemRight.saturation = constrain(systemRight.saturation,0,100);
-        //systemRight.saturation = 100;
-        
         if(skeleton.rightHandRondDuBras.activatedDirectionCode != 0){this.coder = skeleton.rightHandRondDuBras.activatedDirectionCode;}
-        
-        //println("CORR", this.coder);
-        systemRight.addParticles(this.normPosRight,coder);/*map(this.normPos.y,-height/2, height/2,0,1)     ,map(skeleton.joints[HAND_RIGHT].previousStandartDeviation,0,6,0,100*/
+        systemRight.addParticles(this.normPosRight,coder);
+      
       
         this.normPosLeft = skeleton.scene.floor.toFloorCoordinateSystem(skeleton.joints[HAND_LEFT].estimatedPosition);
         this.normPosLeft.x = map(this.normPosLeft.x,(-scene.floor.dimensions.x)/2,(scene.floor.dimensions.x)/2,-width/2,width/2);
         this.normPosLeft.y = map(this.normPosLeft.y,maxHeight,minHeight,-height/2,height/2);
-        
-        //if(skeleton.leftHandRondDuBras.activatedDirectionCode != 0){codel = skeleton.leftHandRondDuBras.activatedDirectionCode;}
         
         if(skeleton.joints[HAND_LEFT].standartDeviationNorm<0.5){
           systemLeft.saturation = systemLeft.saturation - this.saturationIncrement;
@@ -134,22 +114,14 @@ void draw() {
           skeleton.joints[HAND_LEFT].saturation = systemLeft.saturation;
           skeleton.joints[HAND_LEFT].saturation = norm(skeleton.joints[HAND_LEFT].saturation,0,100);
         }
+        
         systemLeft.saturation = constrain(systemLeft.saturation,0,100);
-        //systemLeft.saturation = 100;
-        
         if(skeleton.leftHandRondDuBras.activatedDirectionCode != 0){this.codel = skeleton.leftHandRondDuBras.activatedDirectionCode;}
-        //println("CORL", this.codel);
-        systemLeft.addParticles(this.normPosLeft,codel);/*map(this.normPos.y,-height/2, height/2,0,1)      ,map(skeleton.joints[HAND_LEFT].previousStandartDeviation,0,6,0,100*/
-        
-       /* if(skeleton.leftHandPollock.activationDirectionCode != 0 ){
-          paint(normPosLeft.x,normPosLeft.y,color(0));
-          println("\nmao x",this.normPosLeft.x,"\nmao y", this.normPosLeft.y);
-          println("\npollock direction x",(scene.floor.toFloorCoordinateSystem(skeleton.leftHandPollock.headToHandPosition)).x,"\npollock direction y",(scene.floor.toFloorCoordinateSystem(skeleton.leftHandPollock.headToHandPosition).y));
-          println("\npollock2 direction x",(reScaleX(skeleton.leftHandPollock.headToHandPosition.x,"pollockdraw")),"\npollock2 direction y",(reScaleY(skeleton.leftHandPollock.headToHandPosition.y,"pollockdraw")));
-          break;
-        }*/
+        systemLeft.addParticles(this.normPosLeft,codel);
+       
+       
         communication.sendMessageToElenaProject(skeleton);
-      //}
+     
     }
   }
   
@@ -157,11 +129,9 @@ void draw() {
     scene.draw(); // measuredSkeletons, jointOrientation, boneRelativeOrientation, handRadius, handStates
     firstTime = true;
   } else{
-    //if(firstTime) background(color(128));
+    
     // Your animation algorithm should be placed here
-    /*if(drawpaint){
-     paint(mouseX,mouseY,color (0));
-  }*/
+    
     beginCamera();
     camera();
     translate(0,0,0);
@@ -170,10 +140,6 @@ void draw() {
     endCamera();
     drawBackground();
     translate(width/2, height/2,0);
-    
-    
-    
-   
     
     systemLeft.update();
     systemRight.update();
@@ -269,18 +235,7 @@ void keyPressed(){
     if(key == 'r') scene.drawRondDuBras = !scene.drawRondDuBras;
     if(key == 'c') scene.drawCenterOfMass = !scene.drawCenterOfMass;
     if(key == 'M') scene.drawMomentum = !scene.drawMomentum;
-    if(key == '1') codel = 1;
-    if(key == '2') codel = 2;
-    if(key == '3') codel = 3;
-    if(key == '4') codel = 4;
-    if(key == '5') codel = 5;
-    if(key == '6') codel = 6;
-    if(key == '7') coder = 1;
-    if(key == '8') coder = 2;
-    if(key == '9') coder = 3;
-    if(key == '0') coder = 4;
-    if(key == '-') coder = 5;
-    if(key == '=') coder = 6;
+
   }
 }
 

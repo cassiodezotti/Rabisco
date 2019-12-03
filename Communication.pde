@@ -44,42 +44,42 @@ public class Communication{
     messageToElenaProject.add(skeleton.joints[HAND_LEFT].standartDeviationNorm);
     this.oscP5.send(messageToElenaProject, pdAddress);
     
-    messageToElenaProject = new OscMessage("/centerOfMassHeightAdjusted:");
-    messageToElenaProject.add(skeleton.centerOfMassHeightAdjusted);
-    this.oscP5.send(messageToElenaProject, pdAddress);
+    //messageToElenaProject = new OscMessage("/centerOfMassHeightAdjusted:");
+    //messageToElenaProject.add(skeleton.centerOfMassHeightAdjusted);
+    //this.oscP5.send(messageToElenaProject, pdAddress);
     
-    messageToElenaProject = new OscMessage("/dispersion:");
-    messageToElenaProject.add(skeleton.dispersion);
-    this.oscP5.send(messageToElenaProject, pdAddress);
+    //messageToElenaProject = new OscMessage("/dispersion:");
+    //messageToElenaProject.add(skeleton.dispersion);
+    //this.oscP5.send(messageToElenaProject, pdAddress);
     
-    messageToElenaProject = new OscMessage("/leftHandPollock.activationDirectionCode:");
-    messageToElenaProject.add(skeleton.leftHandPollock.activationDirectionCode);
-    this.oscP5.send(messageToElenaProject, pdAddress);
+    //messageToElenaProject = new OscMessage("/leftHandPollock.activationDirectionCode:");
+    //messageToElenaProject.add(skeleton.leftHandPollock.activationDirectionCode);
+    //this.oscP5.send(messageToElenaProject, pdAddress);
     
-    messageToElenaProject = new OscMessage("/rightHandPollock.activationDirectionCode:");
-    messageToElenaProject.add(skeleton.rightHandPollock.activationDirectionCode);
-    this.oscP5.send(messageToElenaProject, pdAddress);
+    //messageToElenaProject = new OscMessage("/rightHandPollock.activationDirectionCode:");
+    //messageToElenaProject.add(skeleton.rightHandPollock.activationDirectionCode);
+    //this.oscP5.send(messageToElenaProject, pdAddress);
     
     messageToElenaProject = new OscMessage("/leftHandRondDuBras");
     messageToElenaProject.add(skeleton.leftHandRondDuBras.activatedDirectionCode);
     this.oscP5.send(messageToElenaProject, pdAddress);
     
-    if(skeleton.leftHandRondDuBras.activatedDirectionCode != 0 )println("RondLeft",skeleton.leftHandRondDuBras.activatedDirectionCode);
+    
     
     messageToElenaProject = new OscMessage("/rightHandRondDuBras");
     messageToElenaProject.add(skeleton.rightHandRondDuBras.activatedDirectionCode);
     this.oscP5.send(messageToElenaProject, pdAddress);
     
-    if(skeleton.rightHandRondDuBras.activatedDirectionCode != 0 )println("RondRight",skeleton.rightHandRondDuBras.activatedDirectionCode);
     
     
-    messageToElenaProject = new OscMessage("/momentum.averageFluid:");
-    messageToElenaProject.add(skeleton.momentum.averageFluid);
-    this.oscP5.send(messageToElenaProject, pdAddress);
     
-    messageToElenaProject = new OscMessage("/momentum.averageHarsh:");
-    messageToElenaProject.add(skeleton.momentum.averageHarsh);
-    this.oscP5.send(messageToElenaProject, pdAddress);
+    //messageToElenaProject = new OscMessage("/momentum.averageFluid:");
+    //messageToElenaProject.add(skeleton.momentum.averageFluid);
+    //this.oscP5.send(messageToElenaProject, pdAddress);
+    
+    //messageToElenaProject = new OscMessage("/momentum.averageHarsh:");
+    //messageToElenaProject.add(skeleton.momentum.averageHarsh);
+    //this.oscP5.send(messageToElenaProject, pdAddress);
     
     messageToElenaProject = new OscMessage("/momentum.averageTotal:");
     messageToElenaProject.add(skeleton.momentum.averageTotal);

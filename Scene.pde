@@ -20,7 +20,7 @@ public class Scene{
   private float currentDeltaT;
   private float previousDeltaT;
   public int numberOfSkeletons = 0;
-  public boolean saveSession = false;
+  public boolean saveSession = true;
   public String sessionName = "";
   public PrintWriter savingOutput;
   public boolean drawScene = true;

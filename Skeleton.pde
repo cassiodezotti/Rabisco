@@ -91,7 +91,7 @@ public class Skeleton{
     this.rightHandRondDuBras = new RondDuBras(this, "RIGHT");
     if(this.scene.saveSession) {
       this.savingOutput = createWriter("savedSessions/"+this.scene.sessionName+"/skeleton"+this.scene.numberOfSkeletons+".txt");
-      this.savingOutput.print("frameCount bodySize centerOfMassHeightAdjusted dispersion leftPollock rightPollock leftRondDuBras rightRondDuBras momentumFluid momentumHarsh momentumTotal handRadiusLeft handRadiusRight ");
+      this.savingOutput.print("frameCount bodySize leftRondDuBras rightRondDuBras momentumTotal ");
       for(int j=0; j<25; j++){
         this.savingOutput.print("joint"+j+"PositionX joint"+j+"PositionY joint"+j+"PositionZ joint"+j+"OrientationW joint"+j+"OrientationX joint"+j+"OrientationY joint"+j+"OrientationZ joint"+j+"VelocityX joint"+j+"VelocityY joint"+j+"VelocityZ joint"+j+"AccelerationX joint"+j+"AccelerationY joint"+j+"AccelerationZ joint"+j+"Deviation"+j+"DeviationNorm"+j+"Saturation");
       }
@@ -130,17 +130,9 @@ public class Skeleton{
   private void save(){
     this.savingOutput.print(frameCount+" ");
     this.savingOutput.print(this.bodySize+" ");
-    this.savingOutput.print(this.centerOfMassHeightAdjusted+" ");
-    this.savingOutput.print(this.dispersion+" ");
-    this.savingOutput.print(this.leftHandPollock.activationDirectionCode+" ");
-    this.savingOutput.print(this.rightHandPollock.activationDirectionCode+" ");
     this.savingOutput.print(this.leftHandRondDuBras.activatedDirectionCode+" ");
     this.savingOutput.print(this.rightHandRondDuBras.activatedDirectionCode+" ");
-    this.savingOutput.print(this.momentum.averageFluid+" ");
-    this.savingOutput.print(this.momentum.averageHarsh+" ");
     this.savingOutput.print(this.momentum.averageTotal+" ");
-    this.savingOutput.print(this.estimatedHandRadius[0]+" ");
-    this.savingOutput.print(this.estimatedHandRadius[1]+" ");
     for(int j=0; j<25; j++){
       this.savingOutput.print(this.joints[j].estimatedPosition.x+" "+
                               this.joints[j].estimatedPosition.y+" "+
