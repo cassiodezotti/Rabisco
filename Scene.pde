@@ -34,6 +34,7 @@ public class Scene{
   public boolean drawMomentum = false;
   public boolean drawCenterOfMass = false;
   public boolean loadFloorCalibration = true;
+  public boolean hasSkeleton = false;
   
   public Scene(){
     this.currentDeltaT = 1/this.frameRate_; 
@@ -77,11 +78,13 @@ public class Scene{
  * Get new data from kinect and call its skeletons to update.
  */
   public void update(){
+    this.hasSkeleton = false;
     if(!this.saveSession || this.sessionName!="") {
       this.previousDeltaT = this.currentDeltaT;
       this.currentDeltaT = 1/frameRate;
       ArrayList<KSkeleton> kSkeletonArray = kinect.getSkeleton3d();
       for (int bodyNumber = 0; bodyNumber < kSkeletonArray.size(); bodyNumber++){
+        if(hasSkeleton)break;
         KSkeleton kSkeleton = kSkeletonArray.get(bodyNumber);
         if (!activeSkeletons.containsKey(kSkeleton.getIndexColor())){ // New skeleton received
           this.numberOfSkeletons++;
@@ -89,6 +92,7 @@ public class Scene{
         }
         Skeleton skeleton = activeSkeletons.get(kSkeleton.getIndexColor());
         skeleton.update(kSkeleton);
+        hasSkeleton = true;
       }
       this.cleanDeadSkeletons();
     }

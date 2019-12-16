@@ -93,7 +93,7 @@ public class Skeleton{
       this.savingOutput = createWriter("savedSessions/"+this.scene.sessionName+"/skeleton"+this.scene.numberOfSkeletons+".txt");
       this.savingOutput.print("frameCount bodySize leftRondDuBras rightRondDuBras momentumTotal ");
       for(int j=0; j<25; j++){
-        this.savingOutput.print("joint"+j+"PositionX joint"+j+"PositionY joint"+j+"PositionZ joint"+j+"OrientationW joint"+j+"OrientationX joint"+j+"OrientationY joint"+j+"OrientationZ joint"+j+"VelocityX joint"+j+"VelocityY joint"+j+"VelocityZ joint"+j+"AccelerationX joint"+j+"AccelerationY joint"+j+"AccelerationZ joint"+j+"Deviation"+j+"DeviationNorm"+j+"Saturation");
+        this.savingOutput.print("joint"+j+"PositionX joint"+j+"PositionY joint"+j+"PositionZ joint"+j+"OrientationW joint"+j+"OrientationX joint"+j+"OrientationY joint"+j+"OrientationZ joint"+j+"VelocityX joint"+j+"VelocityY joint"+j+"VelocityZ joint"+j+"AccelerationX joint"+j+"AccelerationY joint"+j+"AccelerationZ joint"+j+"Deviation "+j+"DeviationNorm "+j+"Saturation ");
       }
       this.savingOutput.println("");
       this.savingOutput.flush();

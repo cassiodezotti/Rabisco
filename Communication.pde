@@ -32,7 +32,7 @@ public class Communication{
     this.oscP5.send(messageToElenaProject, pdAddress);
     
     messageToElenaProject = new OscMessage("/SaturaLeft");
-    messageToElenaProject.add(skeleton.joints[HAND_RIGHT].saturation);
+    messageToElenaProject.add(skeleton.joints[HAND_LEFT].saturation);
     this.oscP5.send(messageToElenaProject, pdAddress);
     
     messageToElenaProject = new OscMessage("/JerkNormRight");
