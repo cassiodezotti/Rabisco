@@ -28,7 +28,7 @@ private PVector [] coordenate = new PVector [2];
 int myCurrentRandomNumber;
 int mode = 1;
 boolean change = false;
-boolean teste = true;
+
 //NetAddress myRemoteLocation;
 
 
@@ -52,6 +52,16 @@ void draw() {
     trajectories.add(traj);
     traj = new Trajectory(new PVector(0,0),new PVector(0,0),0,0,0,this.face,0);
     plotAll();
+  }
+  
+  if(this.eraser){
+   
+   saveFrame("savedSession"+"_"+day()+"-"+month()+"-"+year()+"_"+hour()+"-"+minute()+"-"+second()+".jpg"); 
+   drawBackground();
+   eraserTrajectory();
+   this.eraser = false;
+   
+   counter = counter + 1; 
   }
   
   quadrants();
@@ -99,15 +109,7 @@ void draw() {
   
   
   
-  if(this.eraser){
-   
-   saveFrame("savedSession"+"_"+day()+"-"+month()+"-"+year()+"_"+hour()+"-"+minute()+"-"+second()+".jpg"); 
-   drawBackground();
-   eraserTrajectory();
-   this.eraser = false;
-   teste = false;
-   counter = counter + 1; 
-  }
+  
   
 }  
 
