@@ -1,2 +1,0 @@
-frameRate: 10.0
-Floor was not calibrated

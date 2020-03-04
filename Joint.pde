@@ -146,7 +146,7 @@ public class Joint{
     if(this.standartDeviation > this.maxDeviation){
      this.maxDeviation = this.standartDeviation; 
     }
-    this.standartDeviationNorm = constrain(norm(this.standartDeviation,0,6));
+    this.standartDeviationNorm = constrain(norm(this.standartDeviation,0,6),0,6);
 /*
     if(this.id == FOOT_LEFT){
       println("LeftFoot accel: "+this.estimatedAcceleration.mag());

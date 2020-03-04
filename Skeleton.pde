@@ -51,17 +51,17 @@ public class Skeleton{
   public float bodySize; // Average length of all bones. Ideally, it should be normalized so that an average person would have bodySize = 1... This normalization have yet to be implemented.
   public float headInclination = 0; // head inclination relative to Z axis, in radians
   public float shoulderTension = 0; // SHOULDER height relative to SPINESHOULDER
-  //public SteeringWheel steeringWheel = new SteeringWheel(this);
+  public SteeringWheel steeringWheel = new SteeringWheel(this);
   public float distanceBetweenHands;
   public PVector centerOfMass;
   public float centerOfMassHeightAdjusted; // Center of Mass height adjusted for body size. 
   public float dispersion; // variance of position of joints, adjusted by body size. (sum of distances to the center of gravity). Ranges from ~1.5 to ~3.
-  public Pollock leftHandPollock;
-  public Pollock rightHandPollock;
   public RondDuBras leftHandRondDuBras;
   public RondDuBras rightHandRondDuBras;
-  public Momentum momentum = new Momentum(this);
-                      
+  public float waistHeigth;
+  public float maxHeigth;
+  public float wingspan;
+  
   public Skeleton(KSkeleton kSkeleton, Scene scene){
     this.scene = scene;
     this.indexColor = kSkeleton.getIndexColor();
@@ -85,13 +85,11 @@ public class Skeleton{
     for(int b=0; b<24; b++){
       this.joints[skeletonConnections[b][1]].addChildBone(this.bones[skeletonConnections[b][0]]);
     }
-    this.leftHandPollock = new Pollock(this, "LEFT");
-    this.rightHandPollock = new Pollock(this, "RIGHT");
     this.leftHandRondDuBras = new RondDuBras(this, "LEFT");
     this.rightHandRondDuBras = new RondDuBras(this, "RIGHT");
     if(this.scene.saveSession) {
       this.savingOutput = createWriter("savedSessions/"+this.scene.sessionName+"/skeleton"+this.scene.numberOfSkeletons+".txt");
-      this.savingOutput.print("frameCount bodySize leftRondDuBras rightRondDuBras momentumTotal ");
+      this.savingOutput.print("frameCount bodySize leftRondDuBras rightRondDuBras");
       for(int j=0; j<25; j++){
         this.savingOutput.print("joint"+j+"PositionX joint"+j+"PositionY joint"+j+"PositionZ joint"+j+"OrientationW joint"+j+"OrientationX joint"+j+"OrientationY joint"+j+"OrientationZ joint"+j+"VelocityX joint"+j+"VelocityY joint"+j+"VelocityZ joint"+j+"AccelerationX joint"+j+"AccelerationY joint"+j+"AccelerationZ joint"+j+"Deviation "+j+"DeviationNorm "+j+"Saturation ");
       }
@@ -114,15 +112,15 @@ public class Skeleton{
     for (int j=0; j<25; j++){
       joints[j].receiveNewMeasurements(kJoints[j]);
     }
+    this.steeringWheel.update();
+    this.leftHandRondDuBras.update();
+    this.rightHandRondDuBras.update();
     this.smoothSkeleton();
     this.calculateBodySize();
     this.calculateCenterOfMass();
     this.calculateDispersion();
-    this.leftHandPollock.update();
-    this.rightHandPollock.update();
-    this.leftHandRondDuBras.update();
-    this.rightHandRondDuBras.update();
-    this.momentum.update();
+    
+    
     this.appearedLastInFrame = frameCount;
     if(this.scene.saveSession) this.save();
   }
@@ -132,7 +130,6 @@ public class Skeleton{
     this.savingOutput.print(this.bodySize+" ");
     this.savingOutput.print(this.leftHandRondDuBras.activatedDirectionCode+" ");
     this.savingOutput.print(this.rightHandRondDuBras.activatedDirectionCode+" ");
-    this.savingOutput.print(this.momentum.averageTotal+" ");
     for(int j=0; j<25; j++){
       this.savingOutput.print(this.joints[j].estimatedPosition.x+" "+
                               this.joints[j].estimatedPosition.y+" "+
@@ -165,9 +162,13 @@ public class Skeleton{
     for(Bone bone:this.bones){
       this.bodySize += bone.estimatedLength/24;
     }
+    this.waistHeigth = (this.bones[14].measuredLength+this.bones[18].measuredLength)/2+(this.bones[13].measuredLength+this.bones[17].measuredLength)/2+this.bones[0].measuredLength;
+    this.maxHeigth = ((this.bones[14].measuredLength+this.bones[18].measuredLength)/2)+((this.bones[13].measuredLength+this.bones[17].measuredLength)/2)+this.bones[0].measuredLength+this.bones[1].measuredLength+this.bones[2].measuredLength+this.bones[3].measuredLength+((this.bones[6].measuredLength+this.bones[10].measuredLength)/2)+this.bones[7].measuredLength;
+    this.wingspan = ((this.bones[4].measuredLength+this.bones[5].measuredLength+this.bones[6].measuredLength)+(this.bones[7].measuredLength+this.bones[8].measuredLength+this.bones[9].measuredLength+this.bones[10].measuredLength+this.bones[11].measuredLength));
   }
   
-/**
+
+  /**
  * Center of Mass: average position of all joints.
  */
   void calculateCenterOfMass(){
@@ -264,20 +265,12 @@ public class Skeleton{
  * @param drawHandStates indicates if raw hand states should be drawn.
  */
   public void draw(boolean drawMeasured, boolean drawJointOrientation, boolean drawBoneRelativeOrientation, boolean drawHandRadius, 
-                   boolean drawHandStates, boolean drawPollock, boolean drawRondDuBras, boolean drawMomentum, boolean drawCenterOfMass){
+                   boolean drawHandStates,  boolean drawCenterOfMass){
     for(Bone bone:this.bones)    bone.draw(drawMeasured, drawBoneRelativeOrientation);
     for(Joint joint:this.joints) joint.draw(drawMeasured, drawJointOrientation);
     if(drawHandRadius)           this.drawHandRadius();
     if(drawHandStates)           this.drawHandStates();
-    if(drawPollock){
-      this.leftHandPollock.draw(true, true, true);
-      this.rightHandPollock.draw(true, true, true);
-    }
-    if(drawRondDuBras){
-      this.leftHandRondDuBras.draw(true, true);
-      this.rightHandRondDuBras.draw(true, true);
-    }
-    if(drawMomentum) this.momentum.draw();
+    
     if(drawCenterOfMass) this.drawCenterOfMass(20);
     //this.drawSteeringWheel();
   }

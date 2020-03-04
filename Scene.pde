@@ -20,7 +20,7 @@ public class Scene{
   private float currentDeltaT;
   private float previousDeltaT;
   public int numberOfSkeletons = 0;
-  public boolean saveSession = true;
+  public boolean saveSession = false;
   public String sessionName = "";
   public PrintWriter savingOutput;
   public boolean drawScene = true;
@@ -29,9 +29,6 @@ public class Scene{
   public boolean drawJointOrientation = false;
   public boolean drawHandRadius = false;
   public boolean drawHandStates = false;
-  public boolean drawPollock = false;
-  public boolean drawRondDuBras = false;
-  public boolean drawMomentum = false;
   public boolean drawCenterOfMass = false;
   public boolean loadFloorCalibration = true;
   public boolean hasSkeleton = false;
@@ -126,7 +123,7 @@ public class Scene{
     this.setCamera();
     if(!this.activeSkeletons.isEmpty()){
       for (Skeleton skeleton:this.activeSkeletons.values()) {
-        skeleton.draw(this.drawMeasured, this.drawJointOrientation, this.drawBoneRelativeOrientation, this.drawHandRadius, this.drawHandStates, this.drawPollock, this.drawRondDuBras, this.drawMomentum, this.drawCenterOfMass);
+        skeleton.draw(this.drawMeasured, this.drawJointOrientation, this.drawBoneRelativeOrientation, this.drawHandRadius, this.drawHandStates, this.drawCenterOfMass);
       }
     }
     this.drawKinectFieldOfView();

@@ -3,17 +3,16 @@ import netP5.*;
   
 public class Communication{
   private OscP5 oscP5;
-  private NetAddress pdAddress;
+  //private NetAddress pdAddress;
   
   public Communication(String pdIp, int pdPort, int myPort){
-    this.oscP5 = new OscP5(this, myPort);
-    this.pdAddress = new NetAddress(pdIp, pdPort); //localhost: "127.0.0.1" "192.168.15.16" // "192.168.15.1"
+    this.oscP5 = new OscP5(this,"239.0.0.1", myPort);
+    //this.pdAddress = new NetAddress(pdIp, pdPort); //localhost: "127.0.0.1" "192.168.15.16" // "192.168.15.1"
   }
   
   public void sendScene(Scene scene){
     if(!scene.activeSkeletons.isEmpty()){
       for(Skeleton skeleton:scene.activeSkeletons.values()){
-        this.sendMessageToElenaProject(skeleton);
         /*
         this.sendKinectSkeleton(skeleton);
         this.sendGrainParameters(skeleton);
@@ -24,86 +23,46 @@ public class Communication{
     }
   }
   
-  private void sendMessageToElenaProject(Skeleton skeleton){
-    OscMessage messageToElenaProject;
-    
-    messageToElenaProject = new OscMessage("/SaturaRight");
-    messageToElenaProject.add(skeleton.joints[HAND_RIGHT].saturation);
-    this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    messageToElenaProject = new OscMessage("/SaturaLeft");
-    messageToElenaProject.add(skeleton.joints[HAND_LEFT].saturation);
-    this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    messageToElenaProject = new OscMessage("/JerkNormRight");
-    messageToElenaProject.add(skeleton.joints[HAND_RIGHT].standartDeviationNorm);
-    this.oscP5.send(messageToElenaProject, pdAddress);
+  private void sendTrajectory(PVector current, PVector previous, int face, int orientation, int quadrant){
     
     
-    messageToElenaProject = new OscMessage("/JerkNormLeft");
-    messageToElenaProject.add(skeleton.joints[HAND_LEFT].standartDeviationNorm);
-    this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    //messageToElenaProject = new OscMessage("/centerOfMassHeightAdjusted:");
-    //messageToElenaProject.add(skeleton.centerOfMassHeightAdjusted);
-    //this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    //messageToElenaProject = new OscMessage("/dispersion:");
-    //messageToElenaProject.add(skeleton.dispersion);
-    //this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    //messageToElenaProject = new OscMessage("/leftHandPollock.activationDirectionCode:");
-    //messageToElenaProject.add(skeleton.leftHandPollock.activationDirectionCode);
-    //this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    //messageToElenaProject = new OscMessage("/rightHandPollock.activationDirectionCode:");
-    //messageToElenaProject.add(skeleton.rightHandPollock.activationDirectionCode);
-    //this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    messageToElenaProject = new OscMessage("/leftHandRondDuBras");
-    messageToElenaProject.add(skeleton.leftHandRondDuBras.activatedDirectionCode);
-    this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    
-    
-    messageToElenaProject = new OscMessage("/rightHandRondDuBras");
-    messageToElenaProject.add(skeleton.rightHandRondDuBras.activatedDirectionCode);
-    this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    
-    
-    
-    //messageToElenaProject = new OscMessage("/momentum.averageFluid:");
-    //messageToElenaProject.add(skeleton.momentum.averageFluid);
-    //this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    //messageToElenaProject = new OscMessage("/momentum.averageHarsh:");
-    //messageToElenaProject.add(skeleton.momentum.averageHarsh);
-    //this.oscP5.send(messageToElenaProject, pdAddress);
-    
-    messageToElenaProject = new OscMessage("/momentum.averageTotal:");
-    messageToElenaProject.add(skeleton.momentum.averageTotal);
-    this.oscP5.send(messageToElenaProject, pdAddress);
+     OscMessage messageToPd = new OscMessage("/trajectory");
+     messageToPd.add(previous.x);
+     messageToPd.add(previous.y);
+     messageToPd.add(previous.z);
+     messageToPd.add(current.x);
+     messageToPd.add(current.y);
+     messageToPd.add(current.z);
+     messageToPd.add(face);
+     messageToPd.add(orientation);
+     messageToPd.add(quadrant);
+     this.oscP5.send(messageToPd);
   }
   
-  /*private void sendSteeringWheel(Skeleton skeleton){
-    OscMessage messageToVideoSphere = new OscMessage("/steeringWheelRollStep:");
-    messageToVideoSphere.add(skeleton.steeringWheel.rollStep);
-    this.oscP5.send(messageToVideoSphere, pdAddress);
-    messageToVideoSphere = new OscMessage("/steeringWheelPitchStep:");
-    messageToVideoSphere.add(skeleton.steeringWheel.pitchStep);
-    this.oscP5.send(messageToVideoSphere, pdAddress);
-  }*/
+  private void sendEraser(String check){
+    OscMessage messageToPd = new OscMessage("/eraser");
+     messageToPd.add(check);
+     
+     this.oscP5.send(messageToPd);
+  }
   
+  private void sendChangeFace(String novo,int face){
+    OscMessage messageToPd = new OscMessage("/change");
+     messageToPd.add(novo);
+     messageToPd.add(face);
+     
+     this.oscP5.send(messageToPd);
+  }
+
   private void sendKinectSkeleton(Skeleton skeleton){ 
     OscMessage messageToPd = new OscMessage("/indexColor:");
     messageToPd.add(skeleton.indexColor);
-    this.oscP5.send(messageToPd, pdAddress);
+    this.oscP5.send(messageToPd);
     
     messageToPd = new OscMessage("/handStates:");
     messageToPd.add(skeleton.estimatedHandRadius[0]);
     messageToPd.add(skeleton.estimatedHandRadius[1]);
-    this.oscP5.send(messageToPd, pdAddress);
+    this.oscP5.send(messageToPd);
     
     for (int jointType = 0; jointType<25 ; jointType++){
       messageToPd = new OscMessage("/joint" + Integer.toString(jointType) + ":");
@@ -115,7 +74,7 @@ public class Communication{
       messageToPd.add(skeleton.joints[jointType].estimatedOrientation.vector.x);
       messageToPd.add(skeleton.joints[jointType].estimatedOrientation.vector.y);
       messageToPd.add(skeleton.joints[jointType].estimatedOrientation.vector.z);
-      this.oscP5.send(messageToPd, pdAddress);
+      this.oscP5.send(messageToPd);
     }
   }
   
@@ -123,26 +82,26 @@ public class Communication{
     OscMessage messageToPd = new OscMessage("/Ready");
     messageToPd = new OscMessage("/mid_z");
     messageToPd.add(map((skeleton.joints[SPINE_BASE].estimatedPosition.z),0.4,3.5,0,1));
-    this.oscP5.send(messageToPd, pdAddress);
+    this.oscP5.send(messageToPd);
     messageToPd = new OscMessage("/hand_left_x");
     messageToPd.add(map((skeleton.joints[HAND_LEFT].estimatedPosition.x),-1.5,1,0,1));
-    this.oscP5.send(messageToPd, pdAddress);
+    this.oscP5.send(messageToPd);
     messageToPd = new OscMessage("/hand_left_y");
     messageToPd.add(map((skeleton.joints[HAND_LEFT].estimatedPosition.y),-1.5,1,0,1));
-    this.oscP5.send(messageToPd, pdAddress);
+    this.oscP5.send(messageToPd);
     messageToPd = new OscMessage("/hand_right_x");
     messageToPd.add(map((skeleton.joints[HAND_RIGHT].estimatedPosition.x),-1.5,1,0,1));
-    this.oscP5.send(messageToPd, pdAddress);
+    this.oscP5.send(messageToPd);
     messageToPd = new OscMessage("/hand_right_y");
     messageToPd.add(map((skeleton.joints[HAND_RIGHT].estimatedPosition.y),-1.5,1,0,1));
-    this.oscP5.send(messageToPd, pdAddress);
+    this.oscP5.send(messageToPd);
   }
   
   private void sendVideoParameter(Skeleton skeleton){
     OscMessage messageToPd = new OscMessage("/Ready");  
-    this.oscP5.send(messageToPd, pdAddress);
+    this.oscP5.send(messageToPd);
     messageToPd = new OscMessage("/Elastic");
     messageToPd.add((skeleton.distanceBetweenHands));
-    this.oscP5.send(messageToPd,pdAddress);
+    this.oscP5.send(messageToPd);
   }
 }
