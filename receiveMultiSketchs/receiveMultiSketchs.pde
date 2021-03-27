@@ -55,8 +55,8 @@ void draw() {
   }
   
   if(this.eraser){
-   
-   saveFrame("savedSession"+"_"+day()+"-"+month()+"-"+year()+"_"+hour()+"-"+minute()+"-"+second()+".jpg"); 
+   print("salvou");
+   saveFrame("savedSession"+"_"+day()+"-"+month()+"-"+year()+"_"+hour()+"-"+minute()+"-"+second()+".tif"); 
    drawBackground();
    eraserTrajectory();
    this.eraser = false;
@@ -74,30 +74,17 @@ void draw() {
   
   float speed = dist(this.previous.x*width, this.previous.y*height, this.current.x*width, this.current.y*height);//dist(Xp*width, Yp*height, X*width, Y*height);
   float lineWidth = map(speed, 5, 50, 2, 20);
-  lineWidth = constrain(lineWidth, 0, 100);//magic!!
+  lineWidth = constrain(lineWidth, 0, 100);
   
-  /*if(newDraw){
-   tag.currentPos.add(current);
-   tag.previousPos.add(previous);
-   tag.quadrants.add(quadrante);
-   
-   //tag.update(current,previous,speed,quadrante,orientacao);
-   
-  }
-  tag.currentPos.add(current);
-   tag.previousPos.add(previous);
-   tag.quadrants.add(quadrante);*/
-  //tag.prin();
-  
+
   
   
   noStroke();
   fill(0, 100);
   strokeCap(ROUND);
-  stroke(cor,100,100);
+  stroke(cor,int(random(80,100)),100);
   strokeWeight(lineWidth);
   //line(Xp*width, Yp*height, X*width, Y*height);
-  
   switch(mode){
     case 1: line(this.previous.x*width, this.previous.y*height, this.current.x*width, this.current.y*height);
       break;
@@ -134,6 +121,7 @@ void oscEvent(OscMessage theOscMessage)
 { 
   // get the first value as an integer
   if(theOscMessage.checkAddrPattern("/trajectory")==true) {
+    
     if(theOscMessage.checkTypetag("ffffffiii")) {
       float xp = theOscMessage.get(0).floatValue();
       float yp = theOscMessage.get(1).floatValue();
@@ -144,8 +132,12 @@ void oscEvent(OscMessage theOscMessage)
       int face = theOscMessage.get(6).intValue();
       int orientation = theOscMessage.get(7).intValue();
       int quadrant = theOscMessage.get(8).intValue();
-      
-      
+      println("x %f",x);
+      println("y %f",y);
+      println("z %f",y);
+      println("xp %f",xp);
+      println("yp %f",yp);
+      println("zp %f",y);
       //this.orientacao = orientation;
       this.face = face;
       this.quadrante = quadrant;
@@ -236,10 +228,10 @@ public void quadrants(){
 
 public int setColors(int quadrante){
   int cor = 0;
-  this.blue = int(random(170,250));
-  this.red = int(random(0,20));
-  this.green = int(random(80,120));
-  this.yellow = int(random(40,70));
+  this.blue = 210;//int(random(170,250));
+  this.red = 10;//int(random(0,20));
+  this.green = 100;//int(random(80,120));
+  this.yellow = 40;// int(random(40,70));
   
   if(quadrante == 1){cor = this.colors.get(0);}//primeiro quadrante
   if(quadrante == 2){cor = this.colors.get(1);}//segundo quadrante
@@ -260,6 +252,15 @@ public int setColors(int quadrante){
   return cor;
   
 }
+//void mouseDragged() {
+//  if(mouseButton == LEFT){
+//    this.Xp = float(pmouseX)/height;
+//    this.Yp = float(pmouseY)/height;
+//    this.X = float(mouseX)/width;
+//    this.Y = float(mouseY)/height;
+    
+//  }
+//}
 public PVector[] setCoordenates(int face){
   PVector current = new PVector(0,0);
   PVector previous = new PVector(0,0);
